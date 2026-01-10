@@ -23,7 +23,6 @@ public class Bullet {
     }
 
     public void render(SpriteBatch batch) {
-        // Простая отрисовка без вращения пока
         batch.draw(texture, bounds.x, bounds.y, bounds.width, bounds.height);
     }
 
@@ -33,7 +32,6 @@ public class Bullet {
         bounds.x += directionX * speed * delta;
         bounds.y += directionY * speed * delta;
 
-        // Удаляем если вышла за границы
         if(bounds.x < -100 || bounds.x > 900 ||
             bounds.y < -100 || bounds.y > 700) {
             active = false;
