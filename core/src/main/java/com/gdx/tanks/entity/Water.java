@@ -4,13 +4,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
-public class Wall {
+public class Water {
     protected Rectangle bounds;
     Texture texture;
 
-    public Wall(float x, float y) {
+    public Water(float x, float y) {
         this.bounds = new Rectangle(x, y, 40, 30);
-        this.texture = new Texture("wall-full-hp.png");
+        this.texture = new Texture("water.png");
     }
 
     public void render(SpriteBatch batch) {
@@ -24,5 +24,4 @@ public class Wall {
     public void dispose() {
         texture.dispose();
     }
-
 }

@@ -26,20 +26,33 @@ public class Bullet {
         batch.draw(texture, bounds.x, bounds.y, bounds.width, bounds.height);
     }
 
-    public void update(float delta){
-        if(!active) return;
+    public void update(float delta) {
+        if (!active) return;
 
         bounds.x += directionX * speed * delta;
         bounds.y += directionY * speed * delta;
 
-        if(bounds.x < -100 || bounds.x > 900 ||
+        if (bounds.x < -100 || bounds.x > 900 ||
             bounds.y < -100 || bounds.y > 700) {
             active = false;
         }
     }
 
-    public void setActive(boolean active){ this.active = active; }
-    public Rectangle getBounds(){ return bounds; }
-    public int getShooterId(){ return shooterId; }
-    public float getDamage(){ return damage; };
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public Rectangle getBounds() {
+        return bounds;
+    }
+
+    public int getShooterId() {
+        return shooterId;
+    }
+
+    public float getDamage() {
+        return damage;
+    }
+
+    ;
 }

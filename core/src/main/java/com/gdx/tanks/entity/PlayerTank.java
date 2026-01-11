@@ -4,12 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 
 public class PlayerTank extends Tank {
-    public PlayerTank(int x, int y, int speed) {
-        super(x, y, speed,  "player-tank.png");
+    public PlayerTank(int x, int y) {
+        super(x, y, "player-tank.png");
     }
 
     @Override
     public void update(float deltaTime) {
+        super.update(deltaTime);
+
         this.oldX = bounds.getX();
         this.oldY = bounds.getY();
 
@@ -23,7 +25,7 @@ public class PlayerTank extends Tank {
 
 
         if (moveX != 0 || moveY != 0) {
-            float length = (float)Math.sqrt(moveX * moveX + moveY * moveY);
+            float length = (float) Math.sqrt(moveX * moveX + moveY * moveY);
             moveX /= length;
             moveY /= length;
 
@@ -34,7 +36,7 @@ public class PlayerTank extends Tank {
             this.directionX = moveX;
             this.directionY = moveY;
 
-            rotation = (float)Math.toDegrees(Math.atan2(moveY, moveX)) - 90;
+            rotation = (float) Math.toDegrees(Math.atan2(moveY, moveX)) - 90;
         }
     }
 
