@@ -7,9 +7,9 @@ import com.badlogic.gdx.math.Rectangle;
 public class Tank {
     protected Rectangle bounds;
     protected Texture texture;
-    protected int speed = 60;
+    protected int speed = 75;
     protected final int width = 30;
-    protected final int height = 20;
+    protected final int height = 30;
     protected float rotation = 0;
     protected float oldX = 0;
     protected float oldY = 0;

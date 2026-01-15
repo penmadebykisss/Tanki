@@ -5,15 +5,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
 public class DestroyAbleWall extends Wall {
-    private int healthPoints;
-    private boolean isActive;
+    private int healthPoints = 150;
+    private boolean isActive = true;
 
     public DestroyAbleWall(float x, float y) {
         super(x, y);
-        this.healthPoints = 150;
-        this.isActive = true;
         this.texture = new Texture("wall-full-hp.png");
-        this.bounds = new Rectangle(x, y, 40, 30);
     }
 
 

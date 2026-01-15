@@ -9,7 +9,6 @@ public class Bullet {
     private float directionX;
     private float directionY;
     private float speed = 500;
-    private float damage;
     private boolean active = true;
     private Texture texture;
     private int shooterId;
@@ -50,9 +49,6 @@ public class Bullet {
         return shooterId;
     }
 
-    public float getDamage() {
-        return damage;
-    }
 
     ;
 }

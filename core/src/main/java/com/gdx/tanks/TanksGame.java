@@ -4,6 +4,8 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.gdx.tanks.entity.*;
@@ -21,6 +23,9 @@ public class TanksGame extends ApplicationAdapter {
     private ArrayList<Water> water;
     private int WND_WIDTH = 800;
     private int WND_HEIGHT = 600;
+    private int firstPlayerWins = 0;
+    private int secondPlayerWins = 0;
+    private boolean matchOver = false;
 
 
     @Override
@@ -46,8 +51,19 @@ public class TanksGame extends ApplicationAdapter {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        float delta = Gdx.graphics.getDeltaTime();
+        if (matchOver) {
+            gameOver();
+            if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
+                restartMatch();
+            }
+            return;
+        }
 
+        if (checkGameOver()) {
+            resetGame();
+        }
+
+        float delta = Gdx.graphics.getDeltaTime();
         updateGame(delta);
         renderGame();
     }
@@ -91,7 +107,7 @@ public class TanksGame extends ApplicationAdapter {
             secondPlayerTank.getBounds().y = secondPlayerTank.getOldY();
 
         }
-        if(checkTanksCollisions()){
+        if (checkTanksCollisions()) {
             playerTank.getBounds().x = playerTank.getOldX();
             playerTank.getBounds().y = playerTank.getOldY();
             secondPlayerTank.getBounds().x = secondPlayerTank.getOldX();
@@ -101,21 +117,12 @@ public class TanksGame extends ApplicationAdapter {
         checkBulletWallCollisions();
         checkBulletTankCollisions();
 
-        if(
-            checkGameOver()){
-            resetGame();
-        }
     }
 
     private void renderGame() {
         batch.begin();
         playerTank.render(batch);
         secondPlayerTank.render(batch);
-
-        for (Bullet bullet : bullets) {
-            bullet.render(batch);
-
-        }
 
         for (Wall wall : defWalls) {
             wall.render(batch);
@@ -127,7 +134,9 @@ public class TanksGame extends ApplicationAdapter {
 
         for (Bullet bullet : bullets) {
             bullet.render(batch);
+
         }
+
         batch.end();
     }
 
@@ -205,10 +214,17 @@ public class TanksGame extends ApplicationAdapter {
         return false;
     }
 
-    private void resetGame(){
-        if (levelNumber < 2) {
+    private void resetGame() {
+
+        if (firstPlayerWins >= 2 || secondPlayerWins >= 2) {
+            matchOver = true;
+            return;
+        }
+
+
+        if (levelNumber < 3) {
             levelNumber += 1;
-        } else{
+        } else {
             levelNumber = 1;
         }
 
@@ -224,20 +240,59 @@ public class TanksGame extends ApplicationAdapter {
         respawnTanks();
     }
 
-    private void respawnTanks(){
+    private void respawnTanks() {
         playerTank.dispose();
         secondPlayerTank.dispose();
 
         spawnTanks();
     }
 
-    private void spawnTanks(){
-        this.playerTank = new PlayerTank(80, 32);
-        this.secondPlayerTank = new SecondPlayerTank(730, 550);
+    private void spawnTanks() {
+        this.playerTank = new PlayerTank(80, 30);
+        this.secondPlayerTank = new SecondPlayerTank(730, 540);
     }
 
-    private boolean checkGameOver(){
-        return !playerTank.isActive() || !secondPlayerTank.isActive();
+    private boolean checkGameOver() {
+        if (!playerTank.isActive()) {
+            secondPlayerWins += 1;
+            return true;
+        } else if (!secondPlayerTank.isActive()) {
+            firstPlayerWins += 1;
+            return true;
+        }
+        return false;
+    }
+
+    private void gameOver() {
+        String winner = firstPlayerWins > secondPlayerWins ? "First Player Wins" : "Second Player Wins";
+        String restartText = "'R' to restart game";
+
+
+        BitmapFont font = new BitmapFont();
+
+
+        float centerX = 400;
+        float centerY = 300;
+
+        batch.begin();
+        font.setColor(1, 1, 1, 1);
+        font.getData().setScale(3);
+        GlyphLayout winnerLayout = new GlyphLayout(font, winner);
+        font.draw(batch, winner, centerX - winnerLayout.width / 2, centerY);
+
+        font.getData().setScale(2);
+        GlyphLayout restartLayout = new GlyphLayout(font, restartText);
+        font.draw(batch, restartText, centerX - restartLayout.width / 2, centerY - 100);
+
+        batch.end();
+    }
+
+    public void restartMatch() {
+        matchOver = false;
+        firstPlayerWins = 0;
+        secondPlayerWins = 0;
+        levelNumber = 0;
+        resetGame();
     }
 
 
